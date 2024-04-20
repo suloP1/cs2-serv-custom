@@ -22,60 +22,53 @@ move_with_append() {
     done
 }
 
-# URL of the tgz file
-url="https://mms.alliedmods.net/mmsdrop/2.0/mmsource-2.0.0-git1286-linux.tar.gz"
+# URL of the first ZIP file
+url1="https://mms.alliedmods.net/mmsdrop/2.0/mmsource-2.0.0-git1286-linux.tar.gz"
 
 # Temporary directory for extraction
-temp_dir=$(mktemp -d)
+temp_dir1=$(mktemp -d)
 
-# Download the tgz file
-wget "$url" -O file.tar.gz
+# Download the first ZIP file
+wget "$url1" -O file1.tar.gz
 
 # Check if download was successful
 if [ $? -eq 0 ]; then
-    echo "Download successful"
+    echo "Download successful for first file"
 
     # Extract contents to temporary directory
-    tar -xzvf file.tar.gz -C "$temp_dir"
+    tar -xzvf file1.tar.gz -C "$temp_dir1"
 
     # Move contents to target folder
-    move_with_append "$temp_dir" "${STEAMAPPDIR}/game/csgo"
+    move_with_append "$temp_dir1" "${STEAMAPPDIR}/game/csgo"
 
-    # Clean up: remove the downloaded tgz file
-    rm file.tar.gz
-
-    echo "Extraction and move completed successfully"
+    echo "Extraction and move for first file completed successfully"
 else
-    echo "Download failed"
+    echo "Download failed for first file"
 fi
 
-# Clean up: remove the temporary directory
-rm -rf "$temp_dir"
+# URL of the second ZIP file
+url2="https://github.com/roflmuffin/CounterStrikeSharp/releases/download/v213/counterstrikesharp-with-runtime-build-213-linux-dfc9859.zip"
 
-url="https://github.com/roflmuffin/CounterStrikeSharp/releases/download/v213/counterstrikesharp-with-runtime-build-213-linux-dfc9859.zip"
 # Temporary directory for extraction
-temp_dir=$(mktemp -d)
+temp_dir2=$(mktemp -d)
 
-# Download the ZIP file
-wget "$url" -O file.zip
+# Download the second ZIP file
+wget "$url2" -O file2.zip
 
 # Check if download was successful
 if [ $? -eq 0 ]; then
-    echo "Download successful"
+    echo "Download successful for second file"
 
     # Extract contents to temporary directory
-    unzip file.zip -d "$temp_dir"
+    unzip file2.zip -d "$temp_dir2"
 
     # Move contents to target folder
-    move_with_append "$temp_dir" "${STEAMAPPDIR}/game/csgo"
+    move_with_append "$temp_dir2" "${STEAMAPPDIR}/game/csgo"
 
-    # Clean up: remove the downloaded ZIP file
-    rm file.zip
-
-    echo "Extraction and move completed successfully"
+    echo "Extraction and move for second file completed successfully"
 else
-    echo "Download failed"
+    echo "Download failed for second file"
 fi
 
-# Clean up: remove the temporary directory
-rm -rf "$temp_dir"
+# Clean up: remove the temporary directories and files
+rm -rf "$temp_dir1" "$temp_dir2" file1.tar.gz file2.zip
