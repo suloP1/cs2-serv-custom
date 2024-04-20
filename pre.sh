@@ -1,22 +1,5 @@
 #!/bin/bash
 
-# Function to merge contents of addons folder using rsync
-merge_addons() {
-    source_dir=$1
-    target_dir=$2
-
-    # Check if target addons directory exists
-    if [ -d "$target_dir" ]; then
-        echo "Target addons directory exists, merging contents using rsync..."
-        # Merge contents of source addons folder into target addons folder
-        rsync -av "$source_dir/" "$target_dir/"
-    else
-        echo "Target addons directory doesn't exist, moving entire addons directory..."
-        # Move entire addons directory to target directory
-        mv "$source_dir" "$target_dir"
-    fi
-}
-
 # Function to move files while appending if the target folder already exists
 move_with_append() {
     source_dir=$1
@@ -55,8 +38,8 @@ if [ $? -eq 0 ]; then
     # Extract contents to temporary directory
     tar -xzvf file1.tar.gz -C "$temp_dir1"
 
-    # Move contents to target folder
-    move_with_append "$temp_dir1" "${STEAMAPPDIR}/game/csgo"
+    # Move contents to target addons folder
+    move_with_append "$temp_dir1/addons" "${STEAMAPPDIR}/game/csgo/addons"
 
     echo "Extraction and move for first file completed successfully"
 else
@@ -79,14 +62,10 @@ if [ $? -eq 0 ]; then
     # Extract contents to temporary directory
     unzip file2.zip -d "$temp_dir2"
 
-    # Move contents to target folder
-    move_with_append "$temp_dir2" "${STEAMAPPDIR}/game/csgo"
+    # Move contents to target addons folder
+    move_with_append "$temp_dir2/addons" "${STEAMAPPDIR}/game/csgo/addons"
 
     echo "Extraction and move for second file completed successfully"
-
-    # Merge contents of addons folders
-    merge_addons "$temp_dir1/addons" "${STEAMAPPDIR}/game/csgo/addons"
-    merge_addons "$temp_dir2/addons" "${STEAMAPPDIR}/game/csgo/addons"
 else
     echo "Download failed for second file"
 fi
