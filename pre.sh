@@ -3,6 +3,9 @@
 # URL of the tgz file
 url="https://mms.alliedmods.net/mmsdrop/2.0/mmsource-2.0.0-git1286-linux.tar.gz"
 
+# Temporary directory for extraction
+temp_dir=$(mktemp -d)
+
 # Download the tgz file
 wget "$url" -O file.tar.gz
 
@@ -10,11 +13,11 @@ wget "$url" -O file.tar.gz
 if [ $? -eq 0 ]; then
     echo "Download successful"
 
-    # Extract contents
-    tar -xzvf file.tar.gz
+    # Extract contents to temporary directory
+    tar -xzvf file.tar.gz -C "$temp_dir"
 
     # Move contents to target folder
-    mv * "${STEAMAPPDIR}/game/csgo"
+    mv "$temp_dir"/* "${STEAMAPPDIR}/game/csgo"
 
     # Clean up: remove the downloaded tgz file
     rm file.tar.gz
@@ -24,3 +27,5 @@ else
     echo "Download failed"
 fi
 
+# Clean up: remove the temporary directory
+rm -rf "$temp_dir"
