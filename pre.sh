@@ -1,31 +1,38 @@
 #!/bin/bash
 
-# URL of the tgz file
-url="https://mms.alliedmods.net/mmsdrop/2.0/mmsource-2.0.0-git1286-linux.tar.gz"
+# Function to download and extract ZIP file
+download_and_extract() {
+    local url="$1"
+    local target_folder="$2"
 
-# Temporary directory for extraction
-temp_dir=$(mktemp -d)
+    # Download ZIP file
+    wget -qO temp.zip "$url"
 
-# Download the tgz file
-wget "$url" -O file.tar.gz
+    # Check if download was successful
+    if [ $? -eq 0 ]; then
+        echo "Download successful"
+        
+        # Extract contents
+        unzip -q temp.zip -d "$target_folder"
+        
+        # Clean up: remove the downloaded ZIP file
+        rm temp.zip
+        
+        echo "Extraction completed successfully"
+    else
+        echo "Download failed"
+    fi
+}
 
-# Check if download was successful
-if [ $? -eq 0 ]; then
-    echo "Download successful"
+# URL of the ZIP file
+cs2_cfg_url="https://github.com/suloP1/cs2-serv-custom/raw/main/cs2-serv-customisation.zip"
+counterstrikesharp_url="https://github.com/roflmuffin/CounterStrikeSharp/releases/download/v213/counterstrikesharp-with-runtime-build-213-linux-dfc9859.zip"
 
-    # Extract contents to temporary directory
-    tar -xzvf file.tar.gz -C "$temp_dir"
+# Directory to move the contents into
+target_folder="/home/steam/cs2-dedicated"  # Update to your desired target folder
 
-    # Move contents to target folder
-    mv "$temp_dir"/* "${STEAMAPPDIR}/game/csgo"
+# Download and extract CS2 config bundle
+download_and_extract "$cs2_cfg_url" "$target_folder"
 
-    # Clean up: remove the downloaded tgz file
-    rm file.tar.gz
-
-    echo "Extraction and move completed successfully"
-else
-    echo "Download failed"
-fi
-
-# Clean up: remove the temporary directory
-rm -rf "$temp_dir"
+# Download and extract CounterStrikeSharp
+download_and_extract "$counterstrikesharp_url" "$target_folder"
