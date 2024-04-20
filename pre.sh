@@ -22,6 +22,19 @@ move_with_append() {
     done
 }
 
+# Function to move the contents of metamod folder
+move_metamod() {
+    source_dir=$1
+    target_dir=$2
+
+    # Check if source metamod folder exists
+    if [ -d "$source_dir" ]; then
+        echo "Moving contents of metamod folder into target metamod folder..."
+        # Move contents of source metamod folder into target metamod folder
+        move_with_append "$source_dir" "$target_dir"
+    fi
+}
+
 # URL of the first ZIP file
 url1="https://mms.alliedmods.net/mmsdrop/2.0/mmsource-2.0.0-git1286-linux.tar.gz"
 
@@ -38,8 +51,8 @@ if [ $? -eq 0 ]; then
     # Extract contents to temporary directory
     tar -xzvf file1.tar.gz -C "$temp_dir1"
 
-    # Move contents to target addons folder
-    move_with_append "$temp_dir1/addons" "${STEAMAPPDIR}/game/csgo/addons"
+    # Move contents of metamod folder to target metamod folder
+    move_metamod "$temp_dir1/addons/metamod" "${STEAMAPPDIR}/game/csgo/addons/metamod"
 
     echo "Extraction and move for first file completed successfully"
 else
@@ -62,8 +75,8 @@ if [ $? -eq 0 ]; then
     # Extract contents to temporary directory
     unzip file2.zip -d "$temp_dir2"
 
-    # Move contents to target addons folder
-    move_with_append "$temp_dir2/addons" "${STEAMAPPDIR}/game/csgo/addons"
+    # Move contents of metamod folder to target metamod folder
+    move_metamod "$temp_dir2/addons/metamod" "${STEAMAPPDIR}/game/csgo/addons/metamod"
 
     echo "Extraction and move for second file completed successfully"
 else
