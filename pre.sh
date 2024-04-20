@@ -29,7 +29,7 @@ cs2_cfg_url="https://github.com/suloP1/cs2-serv-custom/raw/main/cs2-serv-customi
 counterstrikesharp_url="https://github.com/roflmuffin/CounterStrikeSharp/releases/download/v213/counterstrikesharp-with-runtime-build-213-linux-dfc9859.zip"
 
 # Directory to move the contents into
-target_folder="/home/steam/cs2-dedicated"  # Update to your desired target folder
+target_folder="${STEAMAPPDIR}/game/csgo/addons"  # Update to your desired target folder
 
 # Download and extract CS2 config bundle
 download_and_extract "$cs2_cfg_url" "$target_folder"
